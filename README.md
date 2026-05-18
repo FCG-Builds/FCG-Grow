@@ -53,7 +53,7 @@ FCG Grow supports three AI providers. Add your key in **Tools → Settings → A
 
 | Provider | Notes |
 |---|---|
-| [OpenRouter](https://openrouter.ai) | Recommended — access to many models, pay per use |
+| [OpenRouter](https://openrouter.ai) | Recommended — access to many free models |
 | [Anthropic](https://console.anthropic.com) | Claude models directly |
 | [Ollama](https://ollama.com) | 100% local, no API key needed |
 
