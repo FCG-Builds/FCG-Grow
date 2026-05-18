@@ -15,7 +15,7 @@ Built for the way small business owners actually work — juggling grants, outre
 
 ## Features
 
-- **AI Chat Panel** — Ask your board questions, get summaries, move tasks by voice command. Supports OpenRouter, Anthropic, and local Ollama models
+- **AI Chat Panel** — Ask your board questions, get summaries, move tasks by chat input. Supports OpenRouter, Anthropic, and local Ollama models
 - **Kanban Board** — Four columns: To Do, In Progress, Review, Done
 - **Drag & Drop** — Pick up cards from any column and drop them anywhere
 - **Category Badges** — Click any badge to reassign a task's category instantly
