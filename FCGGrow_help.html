@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>FCG Grow Help</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, sans-serif; background: #0f1e16; color: #ccddcc; font-size: 14px; line-height: 1.7; }
+  .sidebar { position: fixed; left: 0; top: 0; width: 210px; height: 100vh; background: #071510; padding: 20px 0; overflow-y: auto; border-right: 1px solid #2d6a4f; }
+  .sidebar h2 { color: #76b900; font-size: 15px; padding: 0 16px 12px; border-bottom: 1px solid #2d6a4f; margin-bottom: 8px; }
+  .sidebar a { display: block; padding: 7px 16px; color: #8aab96; text-decoration: none; font-size: 12px; border-left: 3px solid transparent; transition: all 0.15s; }
+  .sidebar a:hover, .sidebar a.active { color: #76b900; border-left-color: #76b900; background: #0d2618; }
+  .sidebar .section-group { padding: 6px 16px 2px; color: #2d6a4f; font-size: 10px; font-weight: bold; letter-spacing: 2px; margin-top: 8px; }
+  .content { margin-left: 220px; padding: 32px 44px 80px; max-width: 840px; }
+  h1 { color: #76b900; font-size: 26px; margin-bottom: 6px; }
+  .tagline { color: #52b788; font-size: 14px; margin-bottom: 32px; }
+  h2 { color: #52b788; font-size: 20px; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 1px solid #2d6a4f; }
+  h3 { color: #76b900; font-size: 15px; margin: 24px 0 8px; }
+  p { margin-bottom: 12px; color: #b0c8b0; }
+  .tip { background: #0d2618; border-left: 3px solid #76b900; padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+  .tip strong { color: #76b900; }
+  .warning { background: #1a1000; border-left: 3px solid #e9a319; padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+  .warning strong { color: #e9a319; }
+  ul, ol { padding-left: 22px; margin-bottom: 12px; color: #b0c8b0; }
+  li { margin-bottom: 6px; }
+  .provider-card { background: #162a1e; border: 1px solid #2d6a4f; border-radius: 8px; padding: 14px 16px; margin: 10px 0; }
+  .provider-card .name { color: white; font-weight: bold; font-size: 15px; }
+  .badge { display: inline-block; background: #76b900; color: #0a1a0f; font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+  .badge.paid { background: #2d6a4f; color: white; }
+  .badge.thinking { background: #a06b10; color: white; }
+  .step { display: flex; gap: 14px; margin: 10px 0; align-items: flex-start; }
+  .step-num { background: #76b900; color: #0a1a0f; font-weight: bold; font-size: 12px; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 3px; }
+  .step-body { flex: 1; color: #b0c8b0; }
+  .step-body strong { color: #e8f5e0; }
+  code { background: #0d2618; color: #76b900; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-family: Consolas, monospace; }
+  .example { background: #0d2618; border: 1px solid #2d6a4f; border-radius: 6px; padding: 10px 14px; margin: 8px 0; }
+  .example .prompt { color: #76b900; font-style: italic; font-size: 13px; }
+  .example .response { color: #8aab96; font-size: 12px; margin-top: 4px; }
+  .cheatsheet { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .cheat-item { background: #0d2618; border: 1px solid #1a4a2a; border-radius: 6px; padding: 8px 12px; font-size: 12px; color: #76b900; font-style: italic; }
+  .faq-q { color: #e8f5e0; font-weight: bold; margin-top: 20px; font-size: 14px; }
+  .faq-a { color: #b0c8b0; margin-top: 4px; padding-left: 12px; border-left: 2px solid #2d6a4f; margin-bottom: 12px; }
+  .section { margin-bottom: 60px; }
+  a { color: #52b788; }
+  .naics-box { background: #0d2618; border: 1px solid #76b900; border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+  .naics-box .title { color: #76b900; font-weight: bold; font-size: 15px; margin-bottom: 8px; }
+  .naics-examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .naics-tag { background: #162a1e; border: 1px solid #2d6a4f; border-radius: 4px; padding: 4px 10px; font-size: 12px; color: #8aab96; }
+  .naics-tag span { color: #76b900; font-weight: bold; }
+  .first-time-step { background: #0d2618; border-radius: 8px; padding: 14px 16px; margin: 10px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .first-time-num { background: #76b900; color: #0a1a0f; font-weight: bold; font-size: 16px; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .first-time-body h4 { color: white; margin-bottom: 4px; }
+  .first-time-body p { margin: 0; font-size: 13px; }
+  .skip-badge { display: inline-block; background: #1a3a2a; border: 1px solid #2d6a4f; color: #8aab96; font-size: 11px; padding: 1px 8px; border-radius: 10px; margin-left: 6px; }
+  .ui-ref { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 12px 0; align-items: start; }
+  .ui-key { background: #162a1e; border: 1px solid #2d6a4f; border-radius: 5px; padding: 3px 10px; font-size: 12px; color: #76b900; font-weight: bold; white-space: nowrap; text-align: center; }
+  .ui-val { color: #b0c8b0; font-size: 13px; padding-top: 3px; }
+  .col-pill { display: inline-block; border-radius: 4px; padding: 2px 10px; font-size: 12px; font-weight: bold; margin: 2px; }
+  .model-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  .model-table th { background: #0d2618; color: #76b900; padding: 8px 12px; text-align: left; border-bottom: 1px solid #2d6a4f; }
+  .model-table td { padding: 7px 12px; border-bottom: 1px solid #1a3a2a; color: #b0c8b0; }
+  .model-table tr:hover td { background: #0d2618; }
+  .green-btn { display: inline-block; background: #76b900; color: #0a1a0f; font-weight: bold; padding: 2px 10px; border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>🌿 FCG Grow Help</h2>
+  <div class="section-group">GETTING STARTED</div>
+  <a href="#first-time">First Time Setup</a>
+  <a href="#welcome">What is FCG Grow?</a>
+  <a href="#interface">Interface Overview</a>
+  <div class="section-group">YOUR BOARD</div>
+  <a href="#board">Using the Board</a>
+  <a href="#drag">Drag &amp; Drop</a>
+  <a href="#filter">Filters &amp; Search</a>
+  <a href="#calendar">Calendar Import</a>
+  <div class="section-group">AI ASSISTANT</div>
+  <a href="#ai">What the AI Can Do</a>
+  <a href="#thinking">Thinking Models</a>
+  <a href="#cheatsheet">AI Cheat Sheet</a>
+  <div class="section-group">SETUP</div>
+  <a href="#naics">What is a NAICS Code?</a>
+  <a href="#providers">Free AI Keys</a>
+  <a href="#workspaces">Workspaces</a>
+  <a href="#settings">Settings Guide</a>
+  <div class="section-group">REFERENCE</div>
+  <a href="#tips">Power Tips</a>
+  <a href="#faq">FAQ</a>
+  <a href="#about">About FCG Grow</a>
+</div>
+
+<div class="content">
+
+  <!-- FIRST TIME SETUP -->
+  <div class="section" id="first-time">
+    <h1>First Time Setup</h1>
+    <p class="tagline">Get FCG Grow running in under 5 minutes</p>
+    <p>When you open FCG Grow for the first time a setup screen appears. Here is exactly what to do:</p>
+
+    <div class="first-time-step">
+      <div class="first-time-num">1</div>
+      <div class="first-time-body">
+        <h4>Enter your organization name</h4>
+        <p>This is just what you call your business. "Fairy Circle Garden", "Justin's Resale", "My Food Truck" -- anything works. This is what shows up in the app and what the AI calls you.</p>
+      </div>
+    </div>
+
+    <div class="first-time-step">
+      <div class="first-time-num">2</div>
+      <div class="first-time-body">
+        <h4>NAICS Code <span class="skip-badge">skip if unsure</span></h4>
+        <p>Completely optional. If you resell products, freelance, or just aren't sure -- leave it blank. The AI works great without it. Type a keyword or number in the field to filter the list. <a href="#naics">What is a NAICS code?</a></p>
+      </div>
+    </div>
+
+    <div class="first-time-step">
+      <div class="first-time-num">3</div>
+      <div class="first-time-body">
+        <h4>Business Type <span class="skip-badge">optional</span></h4>
+        <p>Plain English is fine. "I resell vintage electronics", "landscaping company", "food truck", "freelance designer". The more specific you are the better the AI advice gets.</p>
+      </div>
+    </div>
+
+    <div class="first-time-step">
+      <div class="first-time-num">4</div>
+      <div class="first-time-body">
+        <h4>Top Goals <span class="skip-badge">optional</span></h4>
+        <p>What are you working toward? "Get my first 10 clients", "win a government contract", "hit $100K revenue". The AI factors these into every recommendation it gives you.</p>
+      </div>
+    </div>
+
+    <div class="first-time-step">
+      <div class="first-time-num">5</div>
+      <div class="first-time-body">
+        <h4>Add an AI Provider</h4>
+        <p>This is how FCG Grow talks to an AI. You need at least one. If you have no budget, pick OpenRouter -- it is completely free and has 300+ models including thinking models. <a href="#providers">Step-by-step guide to getting a free key.</a></p>
+      </div>
+    </div>
+
+    <div class="first-time-step">
+      <div class="first-time-num">6</div>
+      <div class="first-time-body">
+        <h4>Hit Save and Launch</h4>
+        <p>Your board opens. You are ready. The AI panel is on the right -- say hello and ask it what you should work on today.</p>
+      </div>
+    </div>
+
+    <div class="tip"><strong>Need to change anything?</strong> Click the <strong>⚙ cogwheel</strong> in the top right bar at any time to reopen Settings. Nothing is permanent except deleting tasks.</div>
+  </div>
+
+  <!-- WHAT IS OPENOPS -->
+  <div class="section" id="welcome">
+    <h2>What is FCG Grow?</h2>
+    <p>FCG Grow is a task management board with a built-in AI assistant that actually knows your business. It helps you stay organized, figure out what to work on, and get things done -- without needing a big team or expensive software.</p>
+    <p>You do not need to be technical to use it. If you can type a message you can use FCG Grow.</p>
+    <p>It is completely free. Open source. No subscription. No ads. Yours to keep.</p>
+    <div class="tip"><strong>The one-sentence version:</strong> Your board holds all your tasks. The AI on the right reads your board and helps you manage it, write code, answer questions, and run your business -- using plain English.</div>
+  </div>
+
+  <!-- INTERFACE OVERVIEW -->
+  <div class="section" id="interface">
+    <h2>Interface Overview</h2>
+    <p>Here is what every part of the screen does:</p>
+
+    <h3>Top Bar</h3>
+    <div class="ui-ref">
+      <div class="ui-key">FCG Grow</div><div class="ui-val">App logo and branding. The hex pattern is the FCG Grow visual identity.</div>
+      <div class="ui-key">File / View / Tools</div><div class="ui-val">Menu buttons. File has import/export. Tools has calendar import and other utilities.</div>
+      <div class="ui-key">⚙</div><div class="ui-val">Opens Settings. Change your org name, NAICS, goals, and AI providers here.</div>
+      <div class="ui-key">AI</div><div class="ui-val">Toggles the AI chat panel open and closed.</div>
+      <div class="ui-key">+ Add task</div><div class="ui-val">Opens the Add Task dialog. Fill in title, status, priority, category, due date, and notes.</div>
+    </div>
+
+    <h3>Workspace Tabs</h3>
+    <p>The small tab row just below the logo shows your workspaces. The active one is highlighted in green. Click <strong>+</strong> to create a new workspace. Click <strong>✕</strong> to delete the current one (only visible when you have more than one).</p>
+
+    <h3>Stats Bar</h3>
+    <p>Shows Total tasks, To Do count, In Progress count, Active (non-done), and Done count. Updates instantly as you move tasks.</p>
+
+    <h3>Filter &amp; Search Bar</h3>
+    <p>The filter bar shows all categories as lime green labels. The <strong>active filter</strong> has a lime green background with dark text. <strong>Inactive filters</strong> show lime text on a dark background — still clearly lime, just not selected. Click any label to filter. Search box filters in real time as you type.</p>
+
+    <h3>Board Columns</h3>
+    <p>Four columns: <strong>To Do</strong>, <strong>In Progress</strong>, <strong>Review</strong>, <strong>Done</strong>. Each shows a count badge. Scroll within any column independently.</p>
+
+    <h3>AI Chat Panel</h3>
+    <p>On the right side. Shows the active model name in the top right corner. Type in the box at the bottom and hit <span class="green-btn">Send</span>. <strong>Clear</strong> resets the conversation history.</p>
+  </div>
+
+  <!-- YOUR BOARD -->
+  <div class="section" id="board">
+    <h2>Using the Board</h2>
+    <p>Your board has four columns. Every task lives in one of them:</p>
+    <ul>
+      <li><strong style="color:#8aab96">To Do</strong> — Things you have not started yet</li>
+      <li><strong style="color:#1a9fff">In Progress</strong> — Things you are actively working on right now</li>
+      <li><strong style="color:#e9a319">Review</strong> — Done but needs a check before closing out</li>
+      <li><strong style="color:#52b788">Done</strong> — Finished. Celebrate.</li>
+    </ul>
+
+    <h3>Adding a Task</h3>
+    <ul>
+      <li>Click <strong>+ Add task</strong> in the top right corner</li>
+      <li>Tell the AI: <em>"Add a task to call my insurance broker by Friday"</em> — it appears instantly</li>
+    </ul>
+
+    <h3>Editing a Task</h3>
+    <p>Click <strong>Edit</strong> on any card to open the edit dialog. You can change the title, status, priority, category, due date, and notes. Click <strong>Save task</strong> when done.</p>
+
+    <h3>Moving a Task</h3>
+    <ul>
+      <li>Use the <span class="green-btn">Move to...</span> dropdown on the card — pick any column</li>
+      <li>Drag the card to another column (see <a href="#drag">Drag &amp; Drop</a> below)</li>
+      <li>Tell the AI: <em>"Move [task name] to In Progress"</em></li>
+    </ul>
+
+    <h3>Reassigning a Category</h3>
+    <p>Click the <strong>category badge</strong> on any card (e.g. <span style="background:#d8f3dc;color:#2d6a4f;padding:1px 7px;border-radius:3px;font-size:12px">Operations</span>) to open a quick category picker. Choose any category from the list and the task updates instantly — no dialog required.</p>
+
+    <h3>Clicking a Card</h3>
+    <p>A single click on a card (not on a button) opens the Edit dialog for that task. Same as clicking <strong>Edit</strong>.</p>
+
+    <h3>Deleting a Task</h3>
+    <p>Click <strong style="color:#e05050">Del</strong> on any card. You will be asked to confirm. This cannot be undone -- export your tasks first if you want a backup.</p>
+
+    <h3>Priorities and Due Dates</h3>
+    <p>Tasks with a past due date show the date in red. The AI reads priority and due date when recommending what to work on today. High priority tasks appear with a red accent on the left edge of the card.</p>
+  </div>
+
+  <!-- DRAG AND DROP -->
+  <div class="section" id="drag">
+    <h2>Drag &amp; Drop</h2>
+    <p>You can drag any task card from <strong>any column</strong> to any other column directly with your mouse.</p>
+
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Click and hold</strong> on any task card and immediately start moving — no long press required</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">A <strong>ghost label</strong> of the task title appears under your cursor as you drag</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Release</strong> over any column to drop the card there</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body">The board updates instantly — only the affected columns refresh, not the entire board</div></div>
+
+    <div class="tip"><strong>Speed note:</strong> FCG Grow only redraws the two columns involved in the move. With 200+ tasks on the board it stays snappy because it is not rebuilding every card every time.</div>
+
+    <p>If you accidentally drag to the wrong column just use the <span class="green-btn">Move to...</span> dropdown to correct it, or ask the AI to move it back.</p>
+  </div>
+
+  <!-- FILTERS AND SEARCH -->
+  <div class="section" id="filter">
+    <h2>Filters &amp; Search</h2>
+
+    <h3>Category Filters</h3>
+    <p>The filter bar shows a button for each category. The active filter is highlighted <span class="green-btn">lime green</span> with dark text — same style as the Send button. Inactive filters are dark with muted text.</p>
+    <p>Click any category to show only tasks in that category across all columns. Click <span class="green-btn">All</span> to return to the full board view.</p>
+    <p>Available categories: <strong>Grant, Operations, Admin, Outreach, Marketing, Finance, Other</strong></p>
+
+    <h3>Search</h3>
+    <p>The search box on the right of the filter bar filters in real time as you type. It searches task titles, notes, and categories simultaneously. Clear the search box to return to the full view.</p>
+
+    <div class="tip"><strong>Combine filter + search:</strong> Filter by Grant and then type a keyword to find a specific grant task quickly across all columns.</div>
+  </div>
+
+  <!-- CALENDAR IMPORT -->
+  <div class="section" id="calendar">
+    <h2>Calendar Import</h2>
+    <h3>What is an ICS file?</h3>
+    <p>ICS is a standard file format that calendars use to share events. When you import a calendar into FCG Grow it reads this format and turns your events into tasks on your board.</p>
+    <p><strong>Important:</strong> Once imported your tasks are completely independent from your calendar. Changes you make on the board do not affect your calendar and calendar changes do not affect your board. It is a one-time copy, not an ongoing sync.</p>
+
+    <h3>Importing from Google Calendar</h3>
+    <div class="step"><div class="step-num">1</div><div class="step-body">Go to <strong>calendar.google.com</strong></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">Click the gear icon (Settings) in the top right</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">In the left sidebar click your calendar name under <strong>My calendars</strong></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body">Scroll down to <strong>Integrate calendar</strong></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body">Copy the <strong>Secret address in iCal format</strong> — this is your ICS URL</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-body">In FCG Grow go to <strong>Tools → Import calendar</strong>, paste the URL, click <strong>Import from URL</strong></div></div>
+
+    <h3>Importing from Outlook</h3>
+    <div class="step"><div class="step-num">1</div><div class="step-body">Go to <strong>outlook.com</strong> and open Calendar</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">Click the gear icon, then <strong>View all Outlook settings</strong></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Go to Calendar → <strong>Shared calendars</strong></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body">Under Publish a calendar, select your calendar and click <strong>Publish</strong></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body">Copy the ICS link and paste into FCG Grow <strong>Tools → Import calendar</strong></div></div>
+
+    <h3>Importing a .ics File</h3>
+    <p>If you have a .ics file on your computer, go to <strong>Tools → Import calendar</strong> then click <strong>Load .ics file</strong> and select your file.</p>
+
+    <div class="tip"><strong>Tip:</strong> After importing ask the AI to clean things up — <em>"Remove all tasks older than today"</em> or <em>"Delete anything that looks personal, keep only business tasks"</em>.</div>
+  </div>
+
+  <!-- AI ASSISTANT -->
+  <div class="section" id="ai">
+    <h2>What the AI Can Do</h2>
+    <p>The AI panel lives on the right side. It reads your entire board every time you send a message -- you never have to explain what tasks you have, it already knows.</p>
+
+    <h3>Board Operations</h3>
+    <ul>
+      <li>Tell you what to work on today based on urgency, priority, and your goals</li>
+      <li>Show you everything that is overdue</li>
+      <li>Summarize your entire board in plain English</li>
+      <li>Add new tasks by description (single or bulk)</li>
+      <li>Move tasks between columns on your behalf</li>
+      <li>Recategorize tasks — <em>"Find all grant tasks and move them to the Grant category"</em></li>
+      <li>Delete tasks, including bulk cleanup like <em>"remove everything older than April 1st"</em></li>
+    </ul>
+
+    <h3>Business Advice</h3>
+    <ul>
+      <li>Grants, government contracting, SAM.gov, SDVOSB set-asides, VetCert</li>
+      <li>Hiring, sales pipeline, marketing, pricing, vendor negotiation</li>
+      <li>SBA programs, cash flow, operations efficiency</li>
+      <li>Capability statements, proposals, RFP responses</li>
+    </ul>
+
+    <h3>General Assistance</h3>
+    <ul>
+      <li>Write and explain code in any language</li>
+      <li>Draft emails, proposals, and documents</li>
+      <li>Answer any question — the AI is not limited to business topics</li>
+      <li>Research, analysis, math, writing, technical support</li>
+    </ul>
+
+    <div class="tip"><strong>The AI remembers your conversation.</strong> You can say <em>"actually make that high priority"</em> or <em>"undo that"</em> and it knows what you mean within the same session. FCG Grow keeps the last 20 messages in context.</div>
+
+    <p>The active model name is shown in the top right corner of the AI panel. If the AI seems slow or unresponsive, check the model — thinking models take longer but produce higher quality results.</p>
+  </div>
+
+  <!-- THINKING MODELS -->
+  <div class="section" id="thinking">
+    <h2>Thinking Models</h2>
+    <p>Some AI models (called "thinking" or "reasoning" models) spend time working through a problem internally before responding. They produce significantly better results for complex tasks but take longer than standard models.</p>
+
+    <table class="model-table">
+      <tr><th>Model Type</th><th>Speed</th><th>Best For</th><th>Max Tokens</th></tr>
+      <tr><td>Standard (Haiku, Llama, Mistral)</td><td>Fast (1–5s)</td><td>Quick tasks, board ops, simple questions</td><td>4,096</td></tr>
+      <tr><td>Thinking (Trinity, DeepSeek-R1, o1)</td><td>Slower (10–60s)</td><td>Complex strategy, code, multi-step plans</td><td>16,000</td></tr>
+    </table>
+
+    <p>FCG Grow automatically detects thinking models by name and gives them 16,000 token output space so their reasoning has room to run. You do not need to configure anything.</p>
+
+    <h3>Recommended Free Thinking Models (via OpenRouter)</h3>
+    <ul>
+      <li><code>arcee-ai/trinity-large-thinking</code> — Excellent for complex business strategy</li>
+      <li><code>deepseek/deepseek-r1:free</code> — Strong reasoning, reliable free tier</li>
+      <li><code>deepseek/deepseek-chat:free</code> — Fast, good balance of speed and quality</li>
+    </ul>
+
+    <div class="tip"><strong>Best workflow:</strong> Use a fast model (Haiku, Llama) for daily board management. Switch to a thinking model when you need a real strategy, complex code, or a detailed plan.</div>
+  </div>
+
+  <!-- AI CHEAT SHEET -->
+  <div class="section" id="cheatsheet">
+    <h2>AI Cheat Sheet</h2>
+    <p>Copy any of these exactly or rephrase in your own words -- both work fine.</p>
+
+    <h3>Board Management</h3>
+    <div class="cheatsheet">
+      <div class="cheat-item">"What should I prioritize today?"</div>
+      <div class="cheat-item">"What tasks are overdue?"</div>
+      <div class="cheat-item">"Summarize my board"</div>
+      <div class="cheat-item">"What's in Review right now?"</div>
+      <div class="cheat-item">"Show me all my Grant tasks"</div>
+      <div class="cheat-item">"How many tasks do I have total?"</div>
+    </div>
+
+    <h3>Adding &amp; Moving Tasks</h3>
+    <div class="cheatsheet">
+      <div class="cheat-item">"Add a task: call insurance broker by Friday"</div>
+      <div class="cheat-item">"Create a high priority task to submit the grant application"</div>
+      <div class="cheat-item">"Add to In Progress: follow up with Dallas VA"</div>
+      <div class="cheat-item">"Move VetCert to In Progress"</div>
+      <div class="cheat-item">"Mark the insurance task as done"</div>
+      <div class="cheat-item">"Move everything in Review to Done"</div>
+    </div>
+
+    <h3>Bulk Cleanup</h3>
+    <div class="cheatsheet">
+      <div class="cheat-item">"Delete all tasks older than April 1st"</div>
+      <div class="cheat-item">"Remove everything personal, keep business tasks"</div>
+      <div class="cheat-item">"Find all grant tasks and recategorize them"</div>
+      <div class="cheat-item">"Move all overdue tasks to In Progress"</div>
+    </div>
+
+    <h3>Business Advice</h3>
+    <div class="cheatsheet">
+      <div class="cheat-item">"How do I win a government contract?"</div>
+      <div class="cheat-item">"What grants should I apply for?"</div>
+      <div class="cheat-item">"Help me write a capability statement"</div>
+      <div class="cheat-item">"What should I do to grow this month?"</div>
+      <div class="cheat-item">"How do I get on SAM.gov?"</div>
+      <div class="cheat-item">"What insurance do I need for my business?"</div>
+    </div>
+
+    <h3>Technical &amp; General</h3>
+    <div class="cheatsheet">
+      <div class="cheat-item">"Write a Python script to rename files in a folder"</div>
+      <div class="cheat-item">"Draft an email to follow up on an unpaid invoice"</div>
+      <div class="cheat-item">"Explain how to set up a Google Business Profile"</div>
+      <div class="cheat-item">"What is the difference between LLC and sole proprietor?"</div>
+    </div>
+  </div>
+
+  <!-- NAICS -->
+  <div class="section" id="naics">
+    <h2>What is a NAICS Code?</h2>
+    <div class="naics-box">
+      <div class="title">NAICS stands for North American Industry Classification System</div>
+      <p>It is a 6-digit number the United States, Canada, and Mexico use to categorize every type of business by what it does. The government created it so businesses, economists, and agencies can all speak the same language when talking about industries.</p>
+      <p style="margin-top:8px">FCG Grow uses your NAICS code to give you advice specific to your field. A landscaping company gets different advice than a restaurant. The more specific the code the more tailored the guidance.</p>
+      <p style="margin-top:8px; color:#76b900"><strong>You do not need a NAICS code to use FCG Grow.</strong> Skip it if you are unsure -- the AI works great without it. You can always add it later in Settings (⚙).</p>
+    </div>
+
+    <h3>How to Find Your NAICS Code</h3>
+    <p>In the Settings NAICS field, just type a keyword like "landscaping" or "resale" and a filtered list will appear. Or visit <strong>census.gov/naics</strong> and search by keyword.</p>
+
+    <h3>Common Examples</h3>
+    <div class="naics-examples">
+      <div class="naics-tag"><span>561730</span> Landscaping</div>
+      <div class="naics-tag"><span>722511</span> Full-Service Restaurant</div>
+      <div class="naics-tag"><span>541511</span> Software Development</div>
+      <div class="naics-tag"><span>238210</span> Electrical Contractor</div>
+      <div class="naics-tag"><span>484110</span> Trucking</div>
+      <div class="naics-tag"><span>453310</span> Used Merchandise / Resale</div>
+      <div class="naics-tag"><span>812111</span> Barber Shop</div>
+      <div class="naics-tag"><span>541810</span> Advertising / Marketing</div>
+      <div class="naics-tag"><span>621111</span> Medical Office</div>
+      <div class="naics-tag"><span>813110</span> Nonprofit / Religious Org</div>
+      <div class="naics-tag"><span>519130</span> Online Content / Blog</div>
+      <div class="naics-tag"><span>448110</span> Clothing Store</div>
+    </div>
+
+    <div class="tip"><strong>Resellers and general retailers:</strong> Try <strong>453998</strong> (All Other Miscellaneous Store Retailers) or just leave it blank. Both work fine.</div>
+  </div>
+
+  <!-- FREE AI KEYS -->
+  <div class="section" id="providers">
+    <h2>Getting a Free AI Key</h2>
+    <p>FCG Grow needs an AI provider to power the assistant. Think of it like choosing a phone carrier -- different options, same destination.</p>
+    <p><strong style="color:#76b900">You do not need to spend money.</strong> Several providers are completely free. OpenRouter alone gives you access to 300+ models.</p>
+
+    <div class="provider-card" id="provider-openrouter">
+      <div class="name">OpenRouter <span class="badge">FREE</span> <span class="badge thinking">300+ MODELS</span></div>
+      <p>Access to hundreds of free AI models with one account, including thinking/reasoning models. Best choice for most users. No credit card required.</p>
+      <div class="step"><div class="step-num">1</div><div class="step-body">Go to <strong>openrouter.ai</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Click <strong>Sign Up</strong> — Google or email works</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Go to <strong>Keys</strong> in your account menu</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">Click <strong>Create Key</strong> and copy it</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">In FCG Grow click ⚙ Settings, select OpenRouter, paste your key, pick a model</div></div>
+      <p style="margin-top:10px; color:#52b788">Recommended free models: <code>anthropic/claude-3-haiku</code> (fast) · <code>deepseek/deepseek-r1:free</code> (thinking) · <code>meta-llama/llama-3.3-70b-instruct:free</code> (general)</p>
+    </div>
+
+    <div class="provider-card" id="provider-groq">
+      <div class="name">Groq <span class="badge">FREE</span></div>
+      <p>Very fast responses. Generous free tier. Great as a backup provider for speed-sensitive tasks.</p>
+      <div class="step"><div class="step-num">1</div><div class="step-body">Go to <strong>console.groq.com</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Sign up free and go to <strong>API Keys</strong></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Create a key and paste into FCG Grow Settings</div></div>
+      <p style="margin-top:10px; color:#52b788">Recommended model: <code>llama-3.1-8b-instant</code></p>
+    </div>
+
+    <div class="provider-card" id="provider-nvidia">
+      <div class="name">NVIDIA NIM <span class="badge">FREE</span></div>
+      <p>$50 in free credits with a developer account. High quality models optimized for complex reasoning.</p>
+      <div class="step"><div class="step-num">1</div><div class="step-body">Go to <strong>build.nvidia.com</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Sign in or create a free developer account</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Go to your profile and generate an API key</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">Paste into FCG Grow Settings under NVIDIA NIM</div></div>
+    </div>
+
+    <div class="provider-card" id="provider-ollama">
+      <div class="name">Ollama (Local) <span class="badge">FREE</span></div>
+      <p>Runs completely on your own computer. No internet needed after setup. No account. No key. Requires 8GB RAM minimum. 100% private — nothing leaves your machine.</p>
+      <div class="step"><div class="step-num">1</div><div class="step-body">Go to <strong>ollama.com</strong> and download the installer for your OS</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Install it, then open a terminal and run: <code>ollama pull llama3</code></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">In FCG Grow Settings select Ollama — leave the key field blank, set Base URL to <code>http://localhost:11434/v1</code></div></div>
+    </div>
+
+    <div class="provider-card" id="provider-anthropic">
+      <div class="name">Anthropic (Claude) <span class="badge paid">PAID</span></div>
+      <p>The highest quality responses for complex business questions. Pay as you go from console.anthropic.com. Recommended if budget allows -- Claude is exceptional for grant writing, contracts, and strategy.</p>
+    </div>
+
+    <div class="tip"><strong>Best setup for most people:</strong> OpenRouter free as provider 1 (300+ models, including free thinking models), Claude as provider 2 if you have a key. FCG Grow uses the first one by default and only switches if it fails.</div>
+  </div>
+
+  <!-- WORKSPACES -->
+  <div class="section" id="workspaces">
+    <h2>Workspaces</h2>
+    <p>Each workspace is a completely separate board for a different business or project. Tasks, settings, and AI context are fully isolated between workspaces.</p>
+    <p>The workspace tabs sit inside the top bar just below the logo. The active workspace tab is highlighted green. Click a tab to switch instantly. Click the <strong>+</strong> button to add a new workspace. The <strong>✕</strong> button deletes the current workspace (only visible when you have more than one).</p>
+    <p>FCG Grow remembers which workspace you had open and reopens it automatically next time you launch.</p>
+    <div class="warning"><strong>Note:</strong> Deleting a workspace permanently deletes all its tasks. Export your tasks first using File → Export Tasks if you want a backup.</div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="section" id="settings">
+    <h2>Settings Guide</h2>
+    <p>Click the <strong>⚙ cogwheel</strong> in the top right of the app to open Settings for the current workspace.</p>
+
+    <h3>Workspace Fields</h3>
+    <ul>
+      <li><strong>Organization Name</strong> — Your business name. Required. Shows in the app and is read by the AI.</li>
+      <li><strong>NAICS Code</strong> — Optional. Type a keyword to filter the list. <a href="#naics">What is this?</a></li>
+      <li><strong>Business Type</strong> — Optional. Plain English description of what your business does.</li>
+      <li><strong>Top Goals</strong> — Optional. What you are working toward. The AI reads this every message.</li>
+    </ul>
+
+    <h3>Managing AI Providers</h3>
+    <p>Each provider card shows the provider name, API key field, and model selector. The order matters — provider 1 is tried first, then 2, then 3 if the previous ones fail.</p>
+    <ul>
+      <li>Click <strong>Refresh model list</strong> to fetch the latest available models from that provider</li>
+      <li>Click <strong>+ Add Provider</strong> to add a second or third backup provider</li>
+      <li>The current active model is shown in the top right corner of the AI panel</li>
+    </ul>
+
+    <div class="tip"><strong>Thinking models:</strong> FCG Grow automatically detects thinking/reasoning models and gives them 16,000 output tokens instead of 4,096. No configuration needed — just select the model.</div>
+  </div>
+
+  <!-- POWER TIPS -->
+  <div class="section" id="tips">
+    <h2>Power Tips</h2>
+    <ul>
+      <li>Use specific task names. <em>"Follow up with Dallas VA re: grounds maintenance RFP"</em> is far more useful than <em>"Follow up VA"</em>.</li>
+      <li>Add due dates to everything important. The AI flags overdue items automatically and factors urgency into its daily recommendations.</li>
+      <li>After a calendar import, ask the AI to clean it up: <em>"Remove all tasks older than today and delete anything that looks personal"</em>.</li>
+      <li>Export your tasks regularly as a backup using <strong>File → Export Tasks</strong>. It saves as a JSON file you can reimport.</li>
+      <li>Add multiple providers. OpenRouter free as #1 means you almost never burn paid credits, but Claude is there as backup for complex questions.</li>
+      <li>The Clear button in the AI panel resets the conversation history. Use it when switching topics to get cleaner, faster responses.</li>
+      <li>For complex multi-step tasks (bulk categorization, strategy, code), use a thinking model. For quick daily operations use a fast model.</li>
+      <li>The AI reads your Goals field every single message. Keep it updated as your priorities change.</li>
+      <li>You can ask the AI to write code, draft documents, or answer general questions -- it is not limited to board management.</li>
+      <li>Click any <strong>category badge</strong> on a card to instantly reassign it — faster than opening Edit.</li>
+      <li>Drag cards between <strong>any column</strong> — pick up from To Do, In Progress, Review, or Done and drop anywhere.</li>
+    </ul>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section" id="faq">
+    <h2>Frequently Asked Questions</h2>
+
+    <p class="faq-q">My board is empty after moving the app to a new folder.</p>
+    <p class="faq-a">Your tasks are saved in a <code>fcggrow_workspaces/</code> folder next to the app. Copy that entire folder to the new location and your tasks will reappear.</p>
+
+    <p class="faq-q">The AI says "All providers failed" or gives a 404/401 error.</p>
+    <p class="faq-a">Your API key is wrong, expired, or the model is unavailable. Go to ⚙ Settings, find your provider card, clear the key field and paste a fresh one. For 404 errors the model may have been removed from the provider — click <strong>Refresh model list</strong> and pick an active one.</p>
+
+    <p class="faq-q">I asked the AI to do something complex and it did nothing.</p>
+    <p class="faq-a">The model likely ran out of output tokens trying to reason through the request. Switch to a thinking model (like <code>deepseek/deepseek-r1:free</code>) which gets 16,000 token output space. Also try breaking the request into smaller steps.</p>
+
+    <p class="faq-q">The AI used to refuse to write code or answer non-business questions.</p>
+    <p class="faq-a">Fixed in the current version. FCG Grow now explicitly tells the AI it can help with any topic including coding, technical questions, writing, and general advice -- not just business operations.</p>
+
+    <p class="faq-q">Does my data go to the cloud or get shared with anyone?</p>
+    <p class="faq-a">No. Your tasks and settings stay on your computer in the FCG Grow folder. The only data that leaves your machine is the message you send to the AI provider -- same as using their website directly. If you use Ollama (local), absolutely nothing leaves your machine.</p>
+
+    <p class="faq-q">Can I use FCG Grow without any AI provider?</p>
+    <p class="faq-a">Yes. The Kanban board works fully without an AI provider. You just won't have access to the AI assistant panel until you add one.</p>
+
+    <p class="faq-q">Is FCG Grow really free?</p>
+    <p class="faq-a">Yes. The app is completely free and open source. The only potential cost is if you choose a paid AI provider -- but free options (OpenRouter, Groq, Ollama) work great for most tasks.</p>
+
+    <p class="faq-q">How do I get FCG Grow as a standalone app without installing Python?</p>
+    <p class="faq-a">Download the <strong>FCGGrow.exe</strong> file directly from wherever you got this app. Double-click to run -- no Python, no installation, no terminal required. If you only have the .pyw file, contact the person who shared it with you and ask for the .exe version.</p>
+
+    <p class="faq-q">The titlebar on Settings and task dialogs flashes white before turning dark.</p>
+    <p class="faq-a">This is fixed. All windows (including Settings, Edit Task, and the main window) are hidden before the dark chrome flag is applied, then shown — so they are dark from the very first frame. If you are still seeing a flash on an older machine, try closing and reopening the dialog once to let Windows catch up.</p>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section" id="about">
+    <h2>About FCG Grow</h2>
+    <p>FCG Grow was built by <strong style="color:#76b900">Fairy Circle Garden</strong>, a service-disabled veteran-owned small business (SDVOSB) based in Garland, TX.</p>
+    <p>We built it because we needed it. Running a small business is hard enough without paying for 10 different software subscriptions. FCG Grow puts an AI operations co-pilot in the hands of every entrepreneur regardless of budget, technical skill, or industry.</p>
+    <p>Free. Open source. Yours.</p>
+    <p style="margin-top:16px"><a href="https://fairycirclegarden.com" style="color:#52b788">fairycirclegarden.com</a></p>
+  </div>
+
+</div>
+
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('.section[id]');
+  const links = document.querySelectorAll('.sidebar a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    links.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+
+</body>
+</html>
